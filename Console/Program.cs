@@ -1,16 +1,14 @@
 ﻿using BusinessDomain;
-using System.Net.Mail;
 
 #region Products
 List<Product> products = new();
 
 Product product1 = new("Banan", 2.5);
-products.Add(product1);
-
 Product product2 = new("Fanta", 13);
-products.Add(product2);
-
 Product product3 = new("Candy", 1);
+
+products.Add(product1);
+products.Add(product2);
 products.Add(product3);
 #endregion
 
@@ -23,13 +21,12 @@ Basket basket3 = new(0, new());
 #region Customers
 List<Customer> customers = new();
 
-Customer customer1 = new("Jens Andersen", "ja@gmail.com");
+Customer customer1 = new("Jens Andersen", "ja@gmail.com", basket1);
+Customer customer2 = new("Jesper Audisen", "jema@aspit.dk", basket2);
+Customer customer3 = new("Vladimir Vodka", "Putin@Russia.net", basket3);
+
 customers.Add(customer1);
-
-Customer customer2 = new("Jesper Audisen", "jema@aspit.dk");
 customers.Add(customer2);
-
-Customer customer3 = new("Vladimir Vodka", "Putin@Russia.net");
 customers.Add(customer3);
 #endregion
 

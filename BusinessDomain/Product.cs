@@ -5,6 +5,10 @@
     /// </summary>
     public class Product
     {
+        public override string ToString()
+        {
+            return base.ToString();
+        }
         /// <summary>
         /// Constructor for Product, setting the product properties to input values
         /// </summary>
@@ -12,14 +16,18 @@
         /// <param name="price"></param>
         public Product(string name, double price)
         {
+            DateTime dateTime = DateTime.Now;
+
             Name = name;
+            CreationDate = dateTime;
             Price = price;
         }
 
         /// <summary>
-        /// Fields?
+        /// The fields of the Product class, containing the state of the objects properties
         /// </summary>
         private string name;
+        private DateTime creationDate;
         private double price;
 
         /// <summary>
@@ -38,6 +46,21 @@
                     throw new ArgumentOutOfRangeException("Navnet må kun have mellem 1 og 50 karaktere");
                 }
                 name = value;
+            }
+        }
+
+        public DateTime CreationDate
+        {
+            get
+            {
+                return creationDate;
+            }
+            set
+            {
+                if (value.Year < 1900)
+                {
+                    throw new ArgumentOutOfRangeException("For tidlig dato");
+                }
             }
         }
 

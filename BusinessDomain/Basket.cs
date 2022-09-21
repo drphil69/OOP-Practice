@@ -17,7 +17,7 @@
         }
 
         /// <summary>
-        /// Fields?
+        /// The fields of the Basket class, containing the state of the objects properties
         /// </summary>
         private double totalPrice;
         private List<Product> products;

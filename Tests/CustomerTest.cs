@@ -27,7 +27,7 @@ namespace Tests
         public void CustomerWithInvalidStartState()
         {
             // Arrange & Act:
-            Customer c = new("007", "min mail");
+            Customer c = new("007", "min mail", new(0, new()));
 
             // Assert:
             Assert.False(c.Name.All(char.IsNumber));
@@ -41,7 +41,7 @@ namespace Tests
         public void CustomerWithInvalidMutation()
         {
             // Arrange:
-            Customer c = new("James Bond", "james@bond.net");
+            Customer c = new("James Bond", "james@bond.net", new(0, new()));
 
             //Act
             c.Name = "007";

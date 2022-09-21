@@ -9,9 +9,12 @@ namespace Tests
         public void ProductWithInvalidStartState()
         {
             // Arrange & Act:
-            Product p = new("gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg", -3);
+            Product p = new("ggggggggggggggggggggggggggggggggggggggggggggggggggg", -3);
+            
+            p.CreationDate = new(01, 01, 1800);
 
             // Assert:
+            Assert.True(p.CreationDate.Year > 1900);
             Assert.True(p.Name.Length <= 50);
             Assert.True(p.Price > 0);
         }

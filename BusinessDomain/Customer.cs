@@ -31,15 +31,15 @@ namespace BusinessDomain
         /// </summary>
         /// <param name="name"></param>
         /// <param name="mail"></param>
-        public Customer(string name, string mail)
+        public Customer(string name, string mail, Basket basket)
         {
             Name = name;
             Mail = mail;
-            Basket = new(0, new());
+            Basket = basket;
         }
 
         /// <summary>
-        /// Fields?
+        /// The fields of the Customer class, containing the state of the objects properties
         /// </summary>
         private string name;
         private string mail;
