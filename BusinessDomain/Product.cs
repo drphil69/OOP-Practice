@@ -5,6 +5,7 @@
     /// </summary>
     public class Product
     {
+        #region Constructors
         public override string ToString()
         {
             return base.ToString();
@@ -21,25 +22,29 @@
             Name = name;
             CreationDate = dateTime;
             Price = price;
-        }
+        } 
+        #endregion
 
+        #region Fields
         /// <summary>
         /// The fields of the Product class, containing the state of the objects properties
         /// </summary>
         private string name;
         private DateTime creationDate;
-        private double price;
+        private double price; 
+        #endregion
 
+        #region Properties
         /// <summary>
         /// Get and Set properties for name with encapsulation, securing that the name is over 0 and under 50 letters long
         /// </summary>
         public string Name
         {
-            get 
+            get
             {
                 return name;
             }
-            set 
+            set
             {
                 if (value.Length < 0 || value.Length > 50)
                 {
@@ -49,6 +54,9 @@
             }
         }
 
+        /// <summary>
+        /// Get and set properties on Price with encapsulation, securing that the price can not be negative
+        /// </summary>
         public DateTime CreationDate
         {
             get
@@ -82,5 +90,6 @@
                 price = value;
             }
         } 
+        #endregion
     }
 }

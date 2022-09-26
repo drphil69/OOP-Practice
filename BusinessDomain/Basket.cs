@@ -5,8 +5,9 @@
     /// </summary>
     public class Basket
     {
+        #region Constructors
         /// <summary>
-        /// Basket's Constructor, sets Basket properties to given inputs
+        /// Basket's Constructors, sets Basket properties to given inputs
         /// </summary>
         /// <param name="totalPrice"></param>
         /// <param name="products"></param>
@@ -16,22 +17,29 @@
             TotalPrice = TotalPrice;
         }
 
+        public Basket(double totalPrice)
+        {
+            Products = new();
+            TotalPrice = TotalPrice;
+        }
+        #endregion
+
+        #region Fields
         /// <summary>
         /// The fields of the Basket class, containing the state of the objects properties
         /// </summary>
         private double totalPrice;
         private List<Product> products;
+        #endregion
 
+        #region Properties
         /// <summary>
         /// Get and set properties on TotalPrice with encapsulation, securing that TotalPrice always is more than 0
         /// </summary>
         public double TotalPrice
         {
-            get 
-            {
-                return totalPrice;
-            }
-            set 
+            get => totalPrice;
+            set
             {
                 if (value < 0)
                 {
@@ -46,11 +54,8 @@
         /// </summary>
         public List<Product> Products
         {
-            get 
-            {
-                return products;    
-            }
-            set 
+            get => products;
+            private set
             {
                 if (value == null)
                 {
@@ -58,6 +63,7 @@
                 }
                 products = value;
             }
-        }
+        } 
+        #endregion
     }
 }

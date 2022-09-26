@@ -1,110 +1,198 @@
 ﻿using BusinessDomain;
 
-#region Products
-List<Product> products = new();
-
-Product product1 = new("Banan", 2.5);
-Product product2 = new("Fanta", 13);
-Product product3 = new("Candy", 1);
-
-products.Add(product1);
-products.Add(product2);
-products.Add(product3);
-#endregion
-
-#region Baskets
-Basket basket1 = new(0, new());
-Basket basket2 = new(0, new());
-Basket basket3 = new(0, new());
-#endregion
-
-#region Customers
+List<Product> products = new()
+{
+    new("Banan", 2.5),
+    new("Fanta", 13),
+    new("Candy", 1)
+};
 List<Customer> customers = new();
 
-Customer customer1 = new("Jens Andersen", "ja@gmail.com", basket1);
-Customer customer2 = new("Jesper Audisen", "jema@aspit.dk", basket2);
-Customer customer3 = new("Vladimir Vodka", "Putin@Russia.net", basket3);
-
-customers.Add(customer1);
-customers.Add(customer2);
-customers.Add(customer3);
-#endregion
-
-Customer chosenCustomer;
+Console.WriteLine("Velkommen til mit program");
 while (true)
 {
-    Console.WriteLine("Hvem vil du købe som?\nTryk E for at slutte\n\n");
+    Console.WriteLine("Hvordan vil du fortsætte?\n1. Køb ind\n2. Tilføj ny bruger (Admin)\n3. Opret nyt produkt (Admin)\n4. Afslut");
+    ConsoleKey inputKey = Console.ReadKey().Key;
+    if (inputKey == ConsoleKey.D1)
     {
-        for (int i = 0; i < customers.Count; i++)
+        Console.WriteLine("\nSkriv navn på bruger du vil købe ind som");
+        string user = Console.ReadLine();
+        Customer chosenCustomer;
+        foreach(Customer customer in customers)
         {
-            Console.WriteLine($"{i + 1}: {customers[i].Name}");
+            chosenCustomer = customer;
+            if (customer.Name == user)
+            {
+                while (true)
+                {
+
+                    Console.WriteLine("Hvad vil du købe?");
+                    for(int i = 0; i < products.Count; i++)
+                    {
+                        Console.WriteLine($"{products[i].Name}: {products[i].Price} Kr.");
+                    }
+                    string productName = Console.ReadLine();
+                    foreach (Product product in products)
+                    {
+                        if (productName.ToLower() == product.Name.ToLower())
+                        {
+                            Console.WriteLine("Hvor mange vil du købe?");
+                            int numberOfProducts = Convert.ToInt32(Console.ReadLine());
+                            if (numberOfProducts > 0)
+                            {
+                                for(int i = 0; numberOfProducts > i; i++)
+                                {
+                                    chosenCustomer.Basket.Products.Add(product);
+                                    chosenCustomer.Basket.TotalPrice += chosenCustomer.Basket.Products[i].Price;
+                                }
+                                Console.WriteLine("Pris: " + (chosenCustomer.Basket.TotalPrice - (chosenCustomer.Basket.TotalPrice * chosenCustomer.CustomerType.Discount / 100)));
+                                Console.WriteLine("Pris inkl moms: " + ((chosenCustomer.Basket.TotalPrice - (chosenCustomer.Basket.TotalPrice * chosenCustomer.CustomerType.Discount / 100)) * 1.25));
+                                if (!(Continue()))
+                                {
+                                    goto BREAKLOOP;
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Man kan ikke købe produkter i minus");
+                            }
+                        }
+                    }
+                }
+            BREAKLOOP:
+                continue;
+            }
+            else
+            {
+                Console.WriteLine("Den bruger findes ikke\n");
+            }
         }
-        ConsoleKey inputKey = Console.ReadKey().Key;
-        if (inputKey == ConsoleKey.E)
+    }
+    if (inputKey == ConsoleKey.D2)
+    {
+        if (LogIn())
         {
-            goto breakloops;
-        }
-        else if (inputKey == ConsoleKey.D1)
-        {
-            chosenCustomer = customer1;
-        }
-        else if (inputKey == ConsoleKey.D2)
-        {
-            chosenCustomer = customer2;
-        }
-        else if (inputKey == ConsoleKey.D3)
-        {
-            chosenCustomer = customer3;
+            while (true)
+            {
+                Console.WriteLine("Indtast navn");
+                string name = Console.ReadLine();
+                Console.WriteLine("Indtast mail");
+                string mail = Console.ReadLine();
+                inputKey = ConsoleKey.G;
+                while(!(inputKey == ConsoleKey.D1 || inputKey == ConsoleKey.D2 || inputKey == ConsoleKey.D3))
+                {
+                    Console.WriteLine("Vil du købe et bedre medlemskab?\n1. Køb Premium for 150 DKK/m (Modtag 2.45% Rabat)\n2. Køb Gold for 350 DKK/m (Modtag 6.25% Rabat)\n3. Fortsæt som basiskunde");
+                    inputKey = Console.ReadKey().Key;
+                }
+                CustomerTypes customerType;
+                if (inputKey == ConsoleKey.D1)
+                {
+                    customerType = CustomerTypes.Premium;
+                }
+                else if (inputKey == ConsoleKey.D2)
+                {
+                    customerType = CustomerTypes.Gold;
+                }
+                else if (inputKey == ConsoleKey.D3)
+                {
+                    customerType = CustomerTypes.Basis;
+                }
+                else
+                {
+                    customerType = CustomerTypes.Basis;
+                }
+                try
+                {
+                    Customer customer = new(name, mail, customerType, new(0, new()));
+                    customers.Add(customer);
+                    Console.WriteLine("Kunde tilføjet!");
+                    if (!(Continue()))
+                    {
+                        break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Fejl: {ex.Message}. Prøv igen!\n");
+                }
+            }
         }
         else
         {
             break;
         }
-        while (true)
+    }
+    if (inputKey == ConsoleKey.D3)
+    {
+        if (LogIn())
         {
-            Console.WriteLine("\nHvad vil du lægge i din indkøbskurv?\nTryk E for at slutte\n\n");
-            for (int i = 0; i < products.Count; i++)
+            while (true)
             {
-                Console.WriteLine($"{i + 1}: {products[i].Name}");
-            }
-            inputKey = Console.ReadKey().Key;
-            if (inputKey == ConsoleKey.E)
-            {
-                goto breakloops;
-            }
-            else if (inputKey == ConsoleKey.D1)
-            {
-                chosenCustomer.Basket.Products.Add(product1);
-            }
-            else if (inputKey == ConsoleKey.D2)
-            {
-                chosenCustomer.Basket.Products.Add(product2);
-            }
-            else if (inputKey == ConsoleKey.D3)
-            {
-                chosenCustomer.Basket.Products.Add(product3);
-            }
-            else
-            {
-                break;
-            }
-
-            double totalPrice = 0;
-            for (int i = 0; i < chosenCustomer.Basket.Products.Count; i++)
-            {
-                totalPrice = totalPrice + chosenCustomer.Basket.Products[i].Price;
-            }
-            Console.WriteLine($"\nTotalpris: {totalPrice}");
-            Console.WriteLine($"Totalpris + moms: {totalPrice * 1.25}\n");
-
-            Console.WriteLine("Vil du stoppe med at købe?\n");
-            inputKey = Console.ReadKey().Key;
-            if (inputKey == ConsoleKey.J)
-            {
-                break;
+                Console.WriteLine("Indtast navnet på produktet");
+                string productName = Console.ReadLine();
+                Console.WriteLine("Indtast prisen på produktet");
+                double productPrice = Convert.ToDouble(Console.ReadLine());
+                try
+                {
+                    Product product = new(productName, productPrice);
+                    products.Add(product);
+                    Console.WriteLine("Produkt tilføjet!");
+                    if (!(Continue()))
+                    {
+                        break;
+                    }
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine($"Fejl: {e.Message}. Prøv igen!\n");
+                }
             }
         }
+        else
+        {
+            break;
+        }
     }
-breakloops:
-    break;
+    if (inputKey == ConsoleKey.D4)
+    {
+        break;
+    }
 }
+
+#region Methods
+bool Continue()
+{
+    bool continueOutput = false;
+    while (true)
+    {
+        Console.WriteLine("Vil du tilføje flere / mere? [J/N]");
+        ConsoleKey inputKey = Console.ReadKey().Key;
+        if (inputKey == ConsoleKey.J)
+        {
+            continueOutput = true;
+            break;
+        }
+        else if (inputKey == ConsoleKey.N)
+        {
+            break;
+        }
+    }
+    return continueOutput;
+}
+
+bool LogIn()
+{
+    Console.WriteLine("\nIndtast admin kodeordet");
+    string password = Console.ReadLine();
+    if (password == "123")
+    {
+        Console.WriteLine("Korrekt password!\n");
+        return true;
+    }
+    else
+    {
+        Console.WriteLine("Forkert password!\n");
+        return false;
+    }
+} 
+#endregion
